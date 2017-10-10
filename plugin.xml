@@ -188,6 +188,7 @@
         <source-file src="src/android/libs/agora-rtc-sdk.jar" target-dir="libs" />
         <source-file src="src/android/libs/CallEngine_Agora.jar" target-dir="libs" />
         <source-file src="src/android/libs/Rong_CallLib.jar" target-dir="libs" />
+        <source-file src="src/android/libs/Rong_IMKit.jar" target-dir="libs" />
         <source-file src="src/android/libs/Rong_IMLib.jar" target-dir="libs" />
 
         <source-file src="src/android/libs/armeabi-v7a/libagora-crypto.so" target-dir="libs/armeabi-v7a" />
