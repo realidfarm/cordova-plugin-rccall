@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin id="cordova-plugin-rccall" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>rccall</name>
+    <description>Cordova rccall Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,rccall</keywords>
+
+    <js-module name="rccall" src="www/rccall.js">
+        <clobbers target="rccall" />
+    </js-module>
+
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="RCcall">
+                <param name="android-package" value="com.realidfarm.rccall.RCcall" />
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+            <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity
+                android:name="io.rong.imkit.MultiVideoCallActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+                <intent-filter>
+                    <action android:name="io.rong.intent.action.voip.MULTIVIDEO" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
+
+            <activity
+                android:name="io.rong.imkit.SingleCallActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+                <intent-filter>
+                    <action android:name="io.rong.intent.action.voip.SINGLEVIDEO" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+                <intent-filter>
+                    <action android:name="io.rong.intent.action.voip.SINGLEAUDIO" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
+            <activity
+                android:name="io.rong.imkit.MultiAudioCallActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustResize">
+                <intent-filter>
+                    <action android:name="io.rong.intent.action.voip.MULTIAUDIO" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
+
+            <activity android:name="io.rong.imkit.CallSelectMemberActivity" />
+
+            <receiver android:name="io.rong.imkit.RongCallReceiver">
+                <intent-filter>
+                    <action android:name="io.rong.intent.action.UI_READY" />
+                    <action android:name="io.rong.intent.action.SDK_INIT" />
+                    <action android:name="io.rong.intent.action.SDK_CONNECTED" />
+                </intent-filter>
+            </receiver>
+        </config-file>
+
+        <source-file src="src/android/java/AudioCallInputProvider.java" target-dir="src/io/rong/imkit" />
+        
+        <source-file src="src/android/java/AudioCallInputProvider.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/BaseCallActivity.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/CallEndMessageItemProvider.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/CallFloatBoxView.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/CallSelectMemberActivity.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/CallUserGridView.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/MultiAudioCallActivity.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/MultiVideoCallActivity.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RongCallAction.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RongCallKit.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RongCallReceiver.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RongCallService.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RongVoIPIntent.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/SingleCallActivity.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/VideoCallInputProvider.java" target-dir="src/io/rong/imkit" />
+
+        <source-file src="src/android/res/drawable/rc_ic_video.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_audio_answer_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_camera_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_checkbox.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_float_bg.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_hangup_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_mute_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_speaker_selector.xml" target-dir="res/drawable" />
+        <source-file src="src/android/res/drawable/rc_voip_vedio_answer_selector.xml" target-dir="res/drawable" />
+
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_answer.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_answer_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_left_cancel.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_left_connected.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_right_cancel.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_audio_right_connected.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_camera.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_camera_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_disable_camera.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_disable_camera_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_float_audio.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_float_video.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_handfree.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_handfree_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_hang_up.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_hang_up_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_add.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_camera.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_checkbox_checked.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_checkbox_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_checkbox_normal.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_input_video.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_input_video_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_icon_input_video_selected.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_minimize.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_mute.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_mute_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_phone.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_switch_camera.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_video_answer.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_video_answer_hover.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_video_left.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="src/android/res/drawable-xhdpi/rc_voip_video_right.png" target-dir="res/drawable-xhdpi" />
+
+        <source-file src="src/android/res/layout/rc_voip_activity_select_member.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_activity_single_call.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_ac_muti_audio.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_audio_call_user_info.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_call_bottom_connected_button_layout.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_call_bottom_incoming_button_layout.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_contact_container.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_float_box.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_item_incoming_maudio.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_item_outgoing_maudio.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_listitem_select_member.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_multi_video_call.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_multi_video_calling_bottom_view.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_multi_video_top_view.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_user_info.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_user_portrait.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_video_call_user_info.xml" target-dir="res/layout" />
+        <source-file src="src/android/res/layout/rc_voip_viewlet_remote_user.xml" target-dir="res/layout" />
+
+        <source-file src="src/android/res/raw/voip_outgoing_ring.mp3" target-dir="res/raw" />
+
+        <source-file src="src/android/res/values/rc_voipkit_color.xml" target-dir="res/values" />
+        <source-file src="src/android/res/values/rc_voipkit_ids.xml" target-dir="res/values" />
+        <source-file src="src/android/res/values/rc_voipkit_string.xml" target-dir="res/values" />
+        <source-file src="src/android/res/values/rc_voipkit_style.xml" target-dir="res/values" />
+
+        <source-file src="src/android/res/values-en/rc_voipkit_string.xml" target-dir="res/values-en" />
+
+        <source-file src="src/android/libs/agora-rtc-sdk.jar" target-dir="libs" />
+        <source-file src="src/android/libs/CallEngine_Agora.jar" target-dir="libs" />
+        <source-file src="src/android/libs/Rong_CallLib.jar" target-dir="libs" />
+
+        <source-file src="src/android/libs/armeabi-v7a/libagora-crypto.so" target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/libs/armeabi-v7a/libagora-rtc-sdk-jni.so" target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/libs/armeabi-v7a/libRongCallLib.so" target-dir="libs/armeabi-v7a" />
+
+        <source-file src="src/android/libs/x86/libagora-crypto.so" target-dir="libs/x86" />
+        <source-file src="src/android/libs/x86/libagora-rtc-sdk-jni.so" target-dir="libs/x86" />
+        <source-file src="src/android/libs/x86/libRongCallLib.so" target-dir="libs/x86" />
+
+    </platform>
+</plugin>
