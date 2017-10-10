@@ -70,7 +70,7 @@
             </receiver>
         </config-file>
 
-        <source-file src="src/android/java/AudioCallInputProvider.java" target-dir="src/io/rong/imkit" />
+        <source-file src="src/android/java/RCcall.java" target-dir="src/com/realidfarm/rccall" />
         
         <source-file src="src/android/java/AudioCallInputProvider.java" target-dir="src/io/rong/imkit" />
         <source-file src="src/android/java/BaseCallActivity.java" target-dir="src/io/rong/imkit" />
