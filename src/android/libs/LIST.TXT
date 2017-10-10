@@ -1,7 +1,0 @@
-agora-rtc-sdk.jar
-armeabi-v7a
-CallEngine_Agora.jar
-list.bat
-LIST.TXT
-Rong_CallLib.jar
-x86
