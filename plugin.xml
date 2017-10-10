@@ -15,14 +15,39 @@
                 <param name="android-package" value="com.realidfarm.rccall.RCcall" />
             </feature>
         </config-file>
-
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
             <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
             <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.GET_TASKS" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data
+                android:name="RONG_CLOUD_APP_KEY"
+                android:value="bmdehs6pb1n8s" />
+            <service
+                android:name="io.rong.imlib.ipc.RongService"
+                android:exported="true"
+                android:process=":ipc" />
+            <service android:name="io.rong.imlib.ReConnectService"
+                android:exported="true"/>
+            <receiver android:name="io.rong.imlib.ConnectChangeReceiver"
+                android:exported="true"/>
+            <receiver
+                android:name="io.rong.imlib.HeartbeatReceiver"
+                android:process=":ipc" />
             <activity
                 android:name="io.rong.imkit.MultiVideoCallActivity"
                 android:launchMode="singleTop"
@@ -168,10 +193,12 @@
         <source-file src="src/android/libs/armeabi-v7a/libagora-crypto.so" target-dir="libs/armeabi-v7a" />
         <source-file src="src/android/libs/armeabi-v7a/libagora-rtc-sdk-jni.so" target-dir="libs/armeabi-v7a" />
         <source-file src="src/android/libs/armeabi-v7a/libRongCallLib.so" target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/libs/armeabi-v7a/libRongIMLib.so" target-dir="libs/armeabi-v7a" />
 
         <source-file src="src/android/libs/x86/libagora-crypto.so" target-dir="libs/x86" />
         <source-file src="src/android/libs/x86/libagora-rtc-sdk-jni.so" target-dir="libs/x86" />
         <source-file src="src/android/libs/x86/libRongCallLib.so" target-dir="libs/x86" />
+        <source-file src="src/android/libs/x86/libRongIMLib.so" target-dir="libs/x86" />
 
     </platform>
 </plugin>
