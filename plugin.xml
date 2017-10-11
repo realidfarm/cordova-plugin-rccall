@@ -199,8 +199,10 @@
         <source-file src="src/android/libs/Rong_IMKit.jar" target-dir="libs" />
         <source-file src="src/android/libs/Rong_IMLib.jar" target-dir="libs" />
 
-        <source-file src="src/android/libs/x86/libRongIMLib.so" target-dir="libs/x86" />
+        <source-file src="src/android/libs/arm64-v8a/libRongIMLib.so" target-dir="libs/arm64-v8a" />
+        <source-file src="src/android/libs/armeabi/libRongIMLib.so" target-dir="libs/armeabi" />
         <source-file src="src/android/libs/armeabi-v7a/libRongIMLib.so" target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/libs/x86/libRongIMLib.so" target-dir="libs/x86" />
 
         <source-file src="src/android/res/color/rc_btn_file_list_send.xml" target-dir="res/color" />
 
