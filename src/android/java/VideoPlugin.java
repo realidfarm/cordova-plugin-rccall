@@ -24,6 +24,8 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Discussion;
 
+import com.taofeng.laodao.R;
+
 /**
  * Created by weiqinxiao on 16/8/16.
  */

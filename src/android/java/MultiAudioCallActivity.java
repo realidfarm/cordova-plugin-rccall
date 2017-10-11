@@ -29,6 +29,8 @@ import io.rong.imlib.model.Discussion;
 import io.rong.imlib.model.UserInfo;
 import io.rong.message.InformationNotificationMessage;
 
+import com.taofeng.laodao.R;
+
 public class MultiAudioCallActivity extends BaseCallActivity {
     private static final String TAG = "VoIPMultiAudioCallActivity";
     LinearLayout audioContainer;

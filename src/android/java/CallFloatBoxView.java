@@ -34,6 +34,8 @@ import io.rong.imkit.utils.NotificationUtil;
 import io.rong.imlib.model.Conversation;
 import io.rong.message.InformationNotificationMessage;
 
+import com.taofeng.laodao.R;
+
 /**
  * Created by weiqinxiao on 16/3/17.
  */

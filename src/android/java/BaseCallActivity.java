@@ -40,6 +40,8 @@ import io.rong.imkit.manager.AudioRecordManager;
 import io.rong.imkit.utilities.PermissionCheckUtil;
 import io.rong.imkit.utils.NotificationUtil;
 
+import com.taofeng.laodao.R;
+
 /**
  * Created by weiqinxiao on 16/3/9.
  */
