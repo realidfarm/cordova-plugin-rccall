@@ -15,6 +15,8 @@ import io.rong.imkit.utilities.PermissionCheckUtil;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
+import com.taofeng.laodao.R;
+
 public class RongCallKit {
 
     public enum CallMediaType {

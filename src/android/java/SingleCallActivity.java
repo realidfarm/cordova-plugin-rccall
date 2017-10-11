@@ -35,6 +35,8 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
+import com.taofeng.laodao.R;
+
 public class SingleCallActivity extends BaseCallActivity implements Handler.Callback {
     private static final String TAG = "VoIPSingleActivity";
     private LayoutInflater inflater;

@@ -16,6 +16,8 @@ import java.util.List;
 import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.model.UserInfo;
 
+import com.taofeng.laodao.R;
+
 /**
  * Created by weiqinxiao on 16/3/25.
  */
