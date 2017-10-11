@@ -33,6 +33,7 @@
             <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
         </config-file>
 
+        <framework src="com.android.support:support-v4:25.0.1" />
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <meta-data
                 android:name="RONG_CLOUD_APP_KEY"
