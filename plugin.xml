@@ -95,6 +95,8 @@
             </receiver>
         </config-file>
 
+        <source-file src="src/android/build-extras.gradle" target-dir="src/.." />
+
         <source-file src="src/android/java/RCcall.java" target-dir="src/com/realidfarm/rccall" />
         
         <!-- 音视频功能 -->
@@ -753,7 +755,7 @@
 
         <source-file src="src/android/res/values-en/rc_ext_string.xml" target-dir="res/values-en" />
         <source-file src="src/android/res/values-en/rc_kit_string.xml" target-dir="res/values-en" />
-        
+
         <source-file src="src/android/res/xml/rc_file_path.xml" target-dir="res/xml" />
     </platform>
 </plugin>
