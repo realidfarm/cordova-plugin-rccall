@@ -1,4 +1,4 @@
-package io.rong.imkit;
+package io.rong.callkit;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.rong.calllib.RongCallCommon;
+import io.rong.imkit.RongContext;
 import io.rong.imkit.widget.AsyncImageView;
 import io.rong.imlib.model.UserInfo;
 
@@ -30,6 +32,7 @@ public class CallSelectMemberActivity extends Activity {
     TextView txtvStart;
     ListAdapter mAdapter;
     ListView mList;
+    RongCallCommon.CallMediaType mMediaType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,8 @@ public class CallSelectMemberActivity extends Activity {
         selectedMember = new ArrayList<>();
 
         Intent intent = getIntent();
+        int type = intent.getIntExtra("mediaType", RongCallCommon.CallMediaType.VIDEO.getValue());
+        mMediaType = RongCallCommon.CallMediaType.valueOf(type);
         final ArrayList<String> invitedMembers = intent.getStringArrayListExtra("invitedMembers");
         ArrayList<String> allMembers = intent.getStringArrayListExtra("allMembers");
         String groupId = intent.getStringExtra("groupId");
@@ -96,8 +101,12 @@ public class CallSelectMemberActivity extends Activity {
                     View v = view.findViewById(R.id.rc_checkbox);
                     String userId = (String) v.getTag();
                     if (!invitedMembers.contains(userId)) {
-                        if (!v.isSelected() && selectedMember.size() + invitedMembers.size() >= 9) {
-                            Toast.makeText(CallSelectMemberActivity.this, "您最多只能选择9人", Toast.LENGTH_SHORT).show();
+                        if (mMediaType.equals(RongCallCommon.CallMediaType.VIDEO)
+                                && !v.isSelected() && selectedMember.size() + invitedMembers.size() >= 9) {
+                            Toast.makeText(CallSelectMemberActivity.this,
+                                    String.format(getString(R.string.rc_voip_over_limit), 9),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
                             return;
                         }
                         if (selectedMember.contains(userId)) {

@@ -35,7 +35,7 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
-    <io.rong.imkit.CallUserGridView
+    <io.rong.callkit.CallUserGridView
         android:id="@+id/rc_voip_members_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,7 +50,7 @@
         android:layout_alignParentStart="true"
         android:layout_above="@+id/rc_voip_control_layout">
 
-    </io.rong.imkit.CallUserGridView>
+    </io.rong.callkit.CallUserGridView>
 
     <TextView
         android:layout_width="wrap_content"

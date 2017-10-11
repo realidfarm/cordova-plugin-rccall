@@ -52,7 +52,7 @@
             android:textColor="#ffffff"
             android:text="@string/rc_voip_participant_users"/>
 
-        <io.rong.imkit.CallUserGridView
+        <io.rong.callkit.CallUserGridView
             android:layout_marginTop="15dp"
             android:id="@+id/rc_voip_members_container"
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:listSelector="@android:color/transparent"
             android:scrollbars="none">
 
-        </io.rong.imkit.CallUserGridView>
+        </io.rong.callkit.CallUserGridView>
     </LinearLayout>
 
 

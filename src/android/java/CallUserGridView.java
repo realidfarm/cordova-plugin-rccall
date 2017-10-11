@@ -1,4 +1,4 @@
-package io.rong.imkit;
+package io.rong.callkit;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -171,10 +171,10 @@ public class CallUserGridView extends ScrollView {
             LinearLayout container = (LinearLayout) linearLayout.getChildAt(i);
             LinearLayout child = (LinearLayout) container.findViewWithTag(childId);
             if (child != null) {
-                AsyncImageView imageView = (AsyncImageView)child.getChildAt(0);
+                AsyncImageView imageView = (AsyncImageView)child.findViewById(R.id.rc_user_portrait);
                 imageView.setAvatar(userInfo.getPortraitUri());
                 if (enableTitle) {
-                    TextView textView = (TextView)child.getChildAt(1);
+                    TextView textView = (TextView)child.findViewById(R.id.rc_user_name);
                     textView.setText(userInfo.getName());
                 }
             }

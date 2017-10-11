@@ -48,7 +48,7 @@
     </FrameLayout>
 
     <ListView
-        android:padding="18dp"
+        android:paddingLeft="18dp"
         android:id="@+id/rc_listview_select_member"
         android:divider="#595e6b"
         android:dividerHeight="0.5px"

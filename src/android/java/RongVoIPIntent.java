@@ -1,4 +1,4 @@
-package io.rong.imkit;
+package io.rong.callkit;
 
 /**
  * Created by weiqinxiao on 16/3/18.

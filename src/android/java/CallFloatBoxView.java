@@ -1,4 +1,4 @@
-package io.rong.imkit;
+package io.rong.callkit;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,13 +22,17 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import io.rong.common.RLog;
-import io.rong.imlib.model.Conversation;
 import io.rong.calllib.IRongCallListener;
 import io.rong.calllib.RongCallClient;
-import io.rong.calllib.RongCallSession;
 import io.rong.calllib.RongCallCommon;
+import io.rong.calllib.RongCallSession;
 import io.rong.calllib.message.CallSTerminateMessage;
+import io.rong.common.RLog;
+import io.rong.imkit.RongContext;
+import io.rong.imkit.RongIM;
+import io.rong.imkit.utils.NotificationUtil;
+import io.rong.imlib.model.Conversation;
+import io.rong.message.InformationNotificationMessage;
 
 /**
  * Created by weiqinxiao on 16/3/17.
@@ -36,35 +40,38 @@ import io.rong.calllib.message.CallSTerminateMessage;
 public class CallFloatBoxView {
     private static Context mContext;
     private static Timer timer;
-    private static int mTime;
+    private static long mTime;
     private static View mView;
     private static Boolean isShown = false;
     private static WindowManager wm;
     private static Bundle mBundle;
     private static final String TAG = "CallFloatBoxView";
 
-    public static void showFloatBox(Context context, Bundle bundle, int time) {
+    public static void showFloatBox(Context context, Bundle bundle) {
         if (isShown) {
             return;
         }
 
         mContext = context;
         isShown = true;
-        mTime = time;
+        RongCallSession session = RongCallClient.getInstance().getCallSession();
+        long activeTime = session != null ? session.getActiveTime() : 0;
+        mTime = activeTime == 0 ? 0 : (System.currentTimeMillis() - activeTime) / 1000;
+
         mBundle = bundle;
         wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams();
 
         int type;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < 24) {
             type = WindowManager.LayoutParams.TYPE_TOAST;
         } else {
             type = WindowManager.LayoutParams.TYPE_PHONE;
         }
         params.type = type;
         params.flags = WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
-                       | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                       | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 
         params.format = PixelFormat.TRANSLUCENT;
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -111,9 +118,9 @@ public class CallFloatBoxView {
             }
         });
         wm.addView(mView, params);
-        TextView timeV = (TextView)mView.findViewById(R.id.rc_time);
+        TextView timeV = (TextView) mView.findViewById(R.id.rc_time);
         setupTime(timeV);
-        ImageView mediaIconV = (ImageView)mView.findViewById(R.id.rc_voip_media_type);
+        ImageView mediaIconV = (ImageView) mView.findViewById(R.id.rc_voip_media_type);
         RongCallCommon.CallMediaType mediaType = RongCallCommon.CallMediaType.valueOf(bundle.getInt("mediaType"));
         if (mediaType.equals(RongCallCommon.CallMediaType.AUDIO)) {
             mediaIconV.setImageResource(R.drawable.rc_voip_float_audio);
@@ -148,19 +155,46 @@ public class CallFloatBoxView {
                 }
 
                 if (!TextUtils.isEmpty(senderId)) {
-                    CallSTerminateMessage message = new CallSTerminateMessage();
-                    message.setReason(reason);
-                    message.setMediaType(callProfile.getMediaType());
-                    message.setExtra(extra);
-                    if (senderId.equals(callProfile.getSelfUserId())) {
-                        message.setDirection("MO");
-                    } else {
-                        message.setDirection("MT");
-                    }
+                    switch (callProfile.getConversationType()) {
+                        case PRIVATE:
+                            CallSTerminateMessage callSTerminateMessage = new CallSTerminateMessage();
+                            callSTerminateMessage.setReason(reason);
+                            callSTerminateMessage.setMediaType(callProfile.getMediaType());
+                            callSTerminateMessage.setExtra(extra);
+                            if (senderId.equals(callProfile.getSelfUserId())) {
+                                callSTerminateMessage.setDirection("MO");
+                                RongIM.getInstance().insertOutgoingMessage(Conversation.ConversationType.PRIVATE, callProfile.getTargetId(),
+                                        io.rong.imlib.model.Message.SentStatus.SENT, callSTerminateMessage, null);
+                            } else {
+                                callSTerminateMessage.setDirection("MT");
+                                io.rong.imlib.model.Message.ReceivedStatus receivedStatus = new io.rong.imlib.model.Message.ReceivedStatus(0);
+                                RongIM.getInstance().insertIncomingMessage(Conversation.ConversationType.PRIVATE, callProfile.getTargetId(),
+                                        senderId, receivedStatus, callSTerminateMessage, null);
+                            }
+                            break;
+                        case GROUP:
+                            InformationNotificationMessage informationNotificationMessage;
+                            if (reason.equals(RongCallCommon.CallDisconnectedReason.NO_RESPONSE)) {
+                                informationNotificationMessage = InformationNotificationMessage.obtain(RongContext.getInstance().getString(R.string.rc_voip_audio_no_response));
+                            } else {
+                                informationNotificationMessage = InformationNotificationMessage.obtain(RongContext.getInstance().getString(R.string.rc_voip_audio_ended));
+                            }
 
-                    RongIM.getInstance().insertMessage(Conversation.ConversationType.PRIVATE, callProfile.getTargetId(), senderId, message, null);
+                            if (senderId.equals(callProfile.getSelfUserId())) {
+                                RongIM.getInstance().insertOutgoingMessage(Conversation.ConversationType.GROUP, callProfile.getTargetId(),
+                                        io.rong.imlib.model.Message.SentStatus.SENT, informationNotificationMessage, null);
+                            } else {
+                                io.rong.imlib.model.Message.ReceivedStatus receivedStatus = new io.rong.imlib.model.Message.ReceivedStatus(0);
+                                RongIM.getInstance().insertIncomingMessage(Conversation.ConversationType.GROUP, callProfile.getTargetId(),
+                                        senderId, receivedStatus, informationNotificationMessage, null);
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 Toast.makeText(mContext, mContext.getString(R.string.rc_voip_call_terminalted), Toast.LENGTH_SHORT).show();
+
                 if (wm != null && mView != null) {
                     wm.removeView(mView);
                     timer.cancel();
@@ -169,7 +203,8 @@ public class CallFloatBoxView {
                     mView = null;
                     mTime = 0;
                 }
-                RongCallClient.getInstance().setVoIPCallListener(null);
+                NotificationUtil.clearNotification(mContext, BaseCallActivity.CALL_NOTIFICATION_ID);
+                RongCallClient.getInstance().setVoIPCallListener(RongCallProxy.getInstance());
             }
 
             @Override
@@ -209,8 +244,8 @@ public class CallFloatBoxView {
         });
     }
 
-    public static int hideFloatBox() {
-        int t = mTime;
+    public static void hideFloatBox() {
+        RongCallClient.getInstance().setVoIPCallListener(RongCallProxy.getInstance());
         if (isShown && null != mView) {
             wm.removeView(mView);
             timer.cancel();
@@ -220,20 +255,34 @@ public class CallFloatBoxView {
             mTime = 0;
             mBundle = null;
         }
-        return t;
     }
 
-    private static void onClickToResume() {
+    public static Intent getResumeIntent() {
+        if (mBundle == null) {
+            return null;
+        }
+        RongCallClient.getInstance().setVoIPCallListener(RongCallProxy.getInstance());
+        Intent intent = new Intent(mBundle.getString("action"));
+        intent.putExtra("floatbox", mBundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("callAction", RongCallAction.ACTION_RESUME_CALL.getName());
+
+        return intent;
+    }
+
+    public static void onClickToResume() {
         //当快速双击悬浮窗时，第一次点击之后会把mBundle置为空，第二次点击的时候出现NPE
         if (mBundle == null) {
             RLog.d(TAG, "onClickToResume mBundle is null");
             return;
         }
+        RongCallClient.getInstance().setVoIPCallListener(RongCallProxy.getInstance());
         Intent intent = new Intent(mBundle.getString("action"));
         intent.putExtra("floatbox", mBundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("callAction", RongCallAction.ACTION_RESUME_CALL.getName());
         mContext.startActivity(intent);
+        mBundle = null;
     }
 
     private static void setupTime(final TextView timeView) {
